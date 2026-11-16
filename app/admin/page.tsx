@@ -1,91 +1,12 @@
 "use client";
-
-import { FormEvent, useEffect, useState } from "react";
-
-export default function AdminPage() {
-  const [username, setUsername] = useState("admin");
-  const [password, setPassword] = useState("");
-  const [authenticated, setAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    fetch("/api/admin/session", { credentials: "same-origin", cache: "no-store" })
-      .then((response) => response.json())
-      .then((data) => setAuthenticated(Boolean(data.authenticated)))
-      .catch(() => setMessage("تعذر الاتصال بخدمة تسجيل الدخول."))
-      .finally(() => setLoading(false));
-  }, []);
-
-  async function handleLogin(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setSubmitting(true);
-    setMessage("");
-    try {
-      const response = await fetch("/api/admin/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "same-origin",
-        body: JSON.stringify({ username, password })
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "تعذر تسجيل الدخول.");
-      setAuthenticated(true);
-      setPassword("");
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : "حدث خطأ غير متوقع.");
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
-  async function handleLogout() {
-    await fetch("/api/admin/logout", { method: "POST", credentials: "same-origin" });
-    setAuthenticated(false);
-    setPassword("");
-    setMessage("");
-  }
-
-  return (
-    <main className="admin-page" dir="rtl">
-      <section className="admin-panel">
-        <div className="admin-mark">د</div>
-        <p className="admin-kicker">د. مصطفى عباس</p>
-        <h1>{loading ? "جارٍ التحقق..." : authenticated ? "تم تسجيل الدخول" : "لوحة الإدارة"}</h1>
-        {loading ? <p className="admin-subtitle">لحظة من فضلك</p> : authenticated ? (
-          <>
-            <p className="admin-subtitle">أنت داخل لوحة الإدارة بنجاح. سيتم إضافة أدوات تعديل بيانات الموقع في الخطوة التالية.</p>
-            <button className="admin-button" onClick={handleLogout}>تسجيل الخروج</button>
-          </>
-        ) : (
-          <form onSubmit={handleLogin}>
-            <label htmlFor="admin-user">اسم المستخدم</label>
-            <input id="admin-user" autoComplete="username" value={username} onChange={(event) => setUsername(event.target.value)} required />
-            <label htmlFor="admin-password">كلمة المرور</label>
-            <input id="admin-password" type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} required />
-            <button className="admin-button" type="submit" disabled={submitting}>{submitting ? "جارٍ الدخول..." : "تسجيل الدخول"}</button>
-          </form>
-        )}
-        {message && <p className="admin-message" role="alert">{message}</p>}
-        <a className="admin-home" href="/">العودة إلى الموقع</a>
-      </section>
-      <style jsx>{`
-        .admin-page{min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(145deg,#0c1427,#172b3e);font-family:Arial,Tahoma,sans-serif;color:#182338}
-        .admin-panel{width:min(100%,420px);background:#fff;border-radius:22px;padding:38px;box-shadow:0 24px 80px #0004;text-align:center}
-        .admin-mark{width:58px;height:58px;margin:0 auto 18px;border-radius:18px;background:#0c1427;color:#62d9ac;display:grid;place-items:center;font-size:30px;font-weight:bold}
-        .admin-kicker{color:#0f8d65;font-size:13px;font-weight:bold;margin:0 0 8px}
-        h1{font-size:25px;margin:0 0 10px;color:#0c1427}
-        .admin-subtitle{font-size:13px;line-height:1.9;color:#6e7889;margin:0 0 24px}
-        form{text-align:right}
-        label{display:block;font-size:13px;font-weight:bold;margin:16px 0 7px}
-        input{width:100%;padding:13px;border:1px solid #dce4e7;border-radius:10px;font:inherit;outline-color:#18a878}
-        .admin-button{width:100%;border:0;border-radius:10px;padding:14px;background:#18a878;color:white;font-size:14px;font-weight:bold;margin-top:22px;cursor:pointer}
-        .admin-button:disabled{opacity:.65;cursor:wait}
-        .admin-message{font-size:12px;color:#b42318;margin:14px 0 0}
-        .admin-home{display:inline-block;margin-top:24px;color:#0f8d65;font-size:12px;text-decoration:none}
-        @media(max-width:480px){.admin-panel{padding:28px 22px}}
-      `}</style>
-    </main>
-  );
-}
+import {useEffect,useState} from "react";
+const initial={heroLead:"رعاية طبية متخصصة في مخ وأعصاب الأطفال والطب النفسي للأطفال، مع اهتمام بفهم احتياجات كل طفل ومساندة أسرته.",clinics:[
+{name:"عيادة رشيد",address:"رشيد - شارع البحر - بجوار مسجد آل حمد - عيادات دار الطب",phones:["01066293232","01012982746","01555194008"],hours:["السبت: 9 صباحًا – 1 ظهرًا"],map:"رشيد شارع البحر بجوار مسجد آل حمد عيادات دار الطب"},
+{name:"عيادة طنطا",address:"مدينة طنطا - مستشفى الشروق - تقاطع شارع علي بيك الكبير مع شارع الحلو",phones:["01023334719"],hours:["الأربعاء: أسبوعيًا"],note:"ساعات العمل ستُضاف لاحقًا",map:"مستشفى الشروق طنطا تقاطع شارع علي بيك الكبير مع شارع الحلو"},
+{name:"عيادة كفر الشيخ",address:"كفر الشيخ - المحاربين الجديدة - برج فينيسيا - أعلى البنك القطري - بجوار مطعم ختعم",phones:["01019986068"],hours:["الأحد: 9 صباحًا – 1 ظهرًا، و3 عصرًا – 6 مساءً","الثلاثاء: 9 صباحًا – 1 ظهرًا","الأربعاء: 4 عصرًا – 8 مساءً","الخميس: 9 صباحًا – 1 ظهرًا"],map:"برج فينيسيا المحاربين الجديدة كفر الشيخ"}]};
+export default function Admin(){const [ok,S]=useState(false),[loading,L]=useState(true),[u,U]=useState("admin"),[p,P]=useState(""),[data,D]=useState<any>(initial),[msg,M]=useState(""),[busy,B]=useState(false);
+useEffect(()=>{fetch("/api/admin/session",{cache:"no-store"}).then(r=>r.json()).then(async x=>{if(x.authenticated){S(true);const r=await fetch("/api/site-content");if(r.ok)D(await r.json())}}).catch(()=>M("تعذر الاتصال")).finally(()=>L(false))},[]);
+async function login(e:any){e.preventDefault();B(true);const r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:u,password:p})});const x=await r.json();if(r.ok){S(true);P("");const c=await fetch("/api/site-content");if(c.ok)D(await c.json())}else M(x.message||"بيانات الدخول غير صحيحة");B(false)}
+async function save(){B(true);const r=await fetch("/api/site-content",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});const x=await r.json();M(r.ok?"تم حفظ التعديلات بنجاح.":x.message||"تعذر الحفظ");B(false)}
+function edit(i:number,k:string,v:string){D((old:any)=>({...old,clinics:old.clinics.map((c:any,n:number)=>n===i?{...c,[k]:["phones","hours"].includes(k)?v.split("\n"):v}:c)}))}
+return <main dir="rtl" className="wrap"><section className="panel"><h1>لوحة إدارة موقع د. مصطفى عباس</h1>{loading?"جارٍ التحميل...":!ok?<form onSubmit={login}><label>اسم المستخدم</label><input value={u} onChange={e=>U(e.target.value)}/><label>كلمة المرور</label><input type="password" value={p} onChange={e=>P(e.target.value)}/><button>دخول</button></form>:<><p>عدّل البيانات المطلوبة واضغط حفظ التعديلات.</p><label>الوصف الرئيسي</label><textarea rows={3} value={data.heroLead} onChange={e=>D({...data,heroLead:e.target.value})}/>{data.clinics.map((c:any,i:number)=><fieldset key={i}><legend>{c.name}</legend>{[["name","اسم العيادة"],["address","العنوان"],["phones","أرقام الهاتف (كل رقم في سطر)"],["hours","المواعيد (كل موعد في سطر)"],["note","ملاحظة"],["map","نص البحث على الخريطة"]].map(([k,label])=><div key={k}><label>{label}</label>{["phones","hours","address"].includes(k)?<textarea rows={k==="hours"?4:2} value={Array.isArray(c[k])?c[k].join("\n"):c[k]||""} onChange={e=>edit(i,k,e.target.value)}/>:<input value={c[k]||""} onChange={e=>edit(i,k,e.target.value)}/>}</div>)}</fieldset>)}<button disabled={busy} onClick={save}>{busy?"جارٍ الحفظ...":"حفظ التعديلات"}</button><button className="secondary" onClick={async()=>{await fetch("/api/admin/logout",{method:"POST"});S(false)}}>تسجيل الخروج</button></>}{msg&&<p className="msg">{msg}</p>}<a href="/">العودة للموقع</a></section><style jsx>{`.wrap{min-height:100vh;background:#0c1427;padding:24px;font-family:Arial;color:#182338}.panel{max-width:760px;margin:20px auto;background:white;border-radius:18px;padding:28px}h1{color:#0c1427}label{display:block;margin:13px 0 6px;font-weight:bold;font-size:13px}input,textarea{width:100%;box-sizing:border-box;border:1px solid #dce4e7;border-radius:8px;padding:11px;font:inherit}fieldset{border:1px solid #dce4e7;border-radius:12px;margin:22px 0;padding:15px}legend{color:#0f8d65;font-weight:bold}button{width:100%;padding:14px;background:#18a878;color:white;border:0;border-radius:9px;margin-top:16px;font-weight:bold}.secondary{background:#e9f5f0;color:#126c50}.msg{color:#0f8d65;font-weight:bold}a{display:block;text-align:center;margin:20px;color:#0f8d65}`}</style></main>}
