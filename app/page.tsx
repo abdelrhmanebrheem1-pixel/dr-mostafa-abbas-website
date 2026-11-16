@@ -43,8 +43,9 @@ const qualifications = [
 
 export default function Home() {
   const [liveClinics, setLiveClinics] = useState(clinics);
+  const [liveDoctorImage, setLiveDoctorImage] = useState("/images/doctor.jpeg");
   const [liveHeroLead, setLiveHeroLead] = useState("رعاية طبية متخصصة في مخ وأعصاب الأطفال والطب النفسي للأطفال، مع اهتمام بفهم احتياجات كل طفل ومساندة أسرته.");
-  useEffect(() => { fetch("/api/site-content", {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(d => { if(d?.clinics?.length===3) setLiveClinics(d.clinics); if(d?.heroLead) setLiveHeroLead(d.heroLead); }).catch(()=>{}); }, []);
+  useEffect(() => { fetch("/api/site-content", {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(d => { if(d?.clinics?.length===3) setLiveClinics(d.clinics); if(d?.heroLead) setLiveHeroLead(d.heroLead); if(d?.doctorImage) setLiveDoctorImage(d.doctorImage); }).catch(()=>{}); }, []);
   return (
     <main>
       <div className="topline"><span>مواعيد العيادات والحجز بالحضور</span><span>رعاية تبدأ بالفهم... واهتمام يمتد للمستقبل</span></div>
@@ -65,7 +66,7 @@ export default function Home() {
         </div>
         <div className="hero-art" aria-label="صورة الدكتور مصطفى عباس">
           <div className="orbit orbit-one"/><div className="orbit orbit-two"/>
-          <div className="portrait-placeholder"><img className="doctor-photo" src="/images/doctor.jpeg" alt="د. مصطفى عباس" /><b>د. مصطفى عباس</b><span>استشاري أول مخ وأعصاب وطب نفسي أطفال</span></div>
+          <div className="portrait-placeholder"><img className="doctor-photo" src={liveDoctorImage || "/images/doctor.jpeg"} alt="د. مصطفى عباس" /><b>د. مصطفى عباس</b><span>استشاري أول مخ وأعصاب وطب نفسي أطفال</span></div>
           <div className="floating-note"><span className="note-icon"><Stethoscope size={20}/></span><span><b>رعاية متخصصة</b><small>مخ وأعصاب وطب نفسي أطفال</small></span></div>
           <div className="hero-stamp"><HeartHandshake size={22}/><span>اهتمام<br/>ورعاية</span></div>
         </div>
