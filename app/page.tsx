@@ -58,9 +58,9 @@ export default function Home() {
           <div className="hero-actions"><a className="primary-btn" href="#clinics">تعرّف على العيادات <ArrowLeft size={18}/></a><a className="text-btn" href="#about">اعرف المزيد عن الدكتور</a></div>
           <div className="hero-proof"><span><ShieldCheck size={18}/> مؤهلات علمية متخصصة</span><span><HeartHandshake size={18}/> اهتمام بالطفل والأسرة</span></div>
         </div>
-        <div className="hero-art" aria-label="مساحة مخصصة لصورة الدكتور">
+        <div className="hero-art" aria-label="صورة الدكتور مصطفى عباس">
           <div className="orbit orbit-one"/><div className="orbit orbit-two"/>
-          <div className="portrait-placeholder"><div className="portrait-symbol"><Brain size={62}/></div><b>د. مصطفى عباس</b><span>صورة الدكتور ستُضاف هنا</span></div>
+          <div className="portrait-placeholder"><img className="doctor-photo" src="/images/doctor.jpg" alt="د. مصطفى عباس" /><b>د. مصطفى عباس</b><span>استشاري أول مخ وأعصاب وطب نفسي أطفال</span></div>
           <div className="floating-note"><span className="note-icon"><Stethoscope size={20}/></span><span><b>رعاية متخصصة</b><small>مخ وأعصاب وطب نفسي أطفال</small></span></div>
           <div className="hero-stamp"><HeartHandshake size={22}/><span>اهتمام<br/>ورعاية</span></div>
         </div>
