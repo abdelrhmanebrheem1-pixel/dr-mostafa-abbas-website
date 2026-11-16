@@ -80,7 +80,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="ticker"><span>د. مصطفى عباس</span><i>✳</i><span>استشاري أول مخ وأعصاب وطب نفسي أطفال</span><i>✳</i><span>ثلاث عيادات لخدمتكم</span><i>✳</i><span>الحجز بالحضور</span></section>
+      <section className="ticker"><span>د. مصطفى عباس</span><i>✳</i><span>استشاري أول مخ وأعصاب وطب نفسي أطفال</span><i>✳</i><span>أربع عيادات لخدمتكم</span><i>✳</i><span>الحجز بالحضور</span></section>
 
       <section className="section about-section" id="about">
         <div className="section-heading"><span className="eyebrow">نبذة عن الدكتور</span><h2>خبرة علمية واهتمام <em>بصحة طفلك</em></h2></div>
