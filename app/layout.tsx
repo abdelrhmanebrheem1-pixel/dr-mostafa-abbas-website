@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "د. مصطفى عباس | مخ وأعصاب وطب نفسي أطفال",
   description: "الموقع الرسمي للدكتور مصطفى عباس، استشاري أول مخ وأعصاب وطب نفسي أطفال. تعرف على العيادات ومواعيد الحجز وطرق التواصل.",
-  metadataBase: new URL("https://dr-mostafa-abbas.pages.dev"),
+  metadataBase: new URL("https://dr-mostafa-abbas-website.pages.dev"),
   openGraph: {
     title: "د. مصطفى عباس | مخ وأعصاب وطب نفسي أطفال",
     description: "رعاية تبدأ بالفهم... واهتمام يمتد للمستقبل.",
