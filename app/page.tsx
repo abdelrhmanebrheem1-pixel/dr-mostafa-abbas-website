@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useState } from "react";
 import {
   ArrowLeft, Brain, CalendarDays, Clock3, MapPin, Phone,
   ShieldCheck, HeartHandshake, Stethoscope, Award, Menu
@@ -40,6 +42,9 @@ const qualifications = [
 ];
 
 export default function Home() {
+  const [liveClinics, setLiveClinics] = useState(clinics);
+  const [liveHeroLead, setLiveHeroLead] = useState("رعاية طبية متخصصة في مخ وأعصاب الأطفال والطب النفسي للأطفال، مع اهتمام بفهم احتياجات كل طفل ومساندة أسرته.");
+  useEffect(() => { fetch("/api/site-content", {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(d => { if(d?.clinics?.length===3) setLiveClinics(d.clinics); if(d?.heroLead) setLiveHeroLead(d.heroLead); }).catch(()=>{}); }, []);
   return (
     <main>
       <div className="topline"><span>مواعيد العيادات والحجز بالحضور</span><span>رعاية تبدأ بالفهم... واهتمام يمتد للمستقبل</span></div>
@@ -54,7 +59,7 @@ export default function Home() {
         <div className="hero-content">
           <span className="eyebrow"><span className="dot"/> رعاية متخصصة للأطفال</span>
           <h1>صحة طفلك النفسية والعصبية <em>تستحق اهتمامًا متخصصًا</em></h1>
-          <p className="hero-lead">رعاية طبية متخصصة في مخ وأعصاب الأطفال والطب النفسي للأطفال، مع اهتمام بفهم احتياجات كل طفل ومساندة أسرته.</p>
+          <p className="hero-lead">{liveHeroLead}</p>
           <div className="hero-actions"><a className="primary-btn" href="#clinics">تعرّف على العيادات <ArrowLeft size={18}/></a><a className="text-btn" href="#about">اعرف المزيد عن الدكتور</a></div>
           <div className="hero-proof"><span><ShieldCheck size={18}/> مؤهلات علمية متخصصة</span><span><HeartHandshake size={18}/> اهتمام بالطفل والأسرة</span></div>
         </div>
@@ -80,7 +85,7 @@ export default function Home() {
 
       <section className="section clinics-section" id="clinics">
         <div className="section-heading"><span className="eyebrow">أماكن ومواعيد العيادات</span><h2>اختر العيادة <em>الأقرب إليك</em></h2><p>الحجز يتم بالحضور إلى العيادة. يُرجى التأكد من المواعيد قبل التوجه.</p></div>
-        <div className="clinic-grid">{clinics.map((clinic, index)=><article className="clinic-card" key={clinic.name}><div className="clinic-top"><span className="clinic-index">0{index+1}</span><span className="clinic-pin"><MapPin size={20}/></span></div><h3>{clinic.name}</h3><p className="clinic-address"><MapPin size={16}/>{clinic.address}</p><div className="clinic-detail-title"><Clock3 size={16}/> مواعيد العمل</div><ul className="hours">{clinic.hours.map(h=><li key={h}>{h}</li>)}</ul>{clinic.note && <p className="note">{clinic.note}</p>}<div className="clinic-detail-title phone-title"><Phone size={16}/> للحجز والاستفسار</div><div className="phone-list">{clinic.phones.map(p=><a href={`tel:${p}`} key={p} dir="ltr">{p}</a>)}</div><a className="map-link" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(clinic.map)}`} target="_blank" rel="noreferrer">عرض الموقع على الخريطة <ArrowLeft size={16}/></a><div className="booking-note"><CalendarDays size={15}/> الحجز بالحضور</div></article>)}</div>
+        <div className="clinic-grid">{liveClinics.map((clinic, index)=><article className="clinic-card" key={clinic.name}><div className="clinic-top"><span className="clinic-index">0{index+1}</span><span className="clinic-pin"><MapPin size={20}/></span></div><h3>{clinic.name}</h3><p className="clinic-address"><MapPin size={16}/>{clinic.address}</p><div className="clinic-detail-title"><Clock3 size={16}/> مواعيد العمل</div><ul className="hours">{clinic.hours.map(h=><li key={h}>{h}</li>)}</ul>{clinic.note && <p className="note">{clinic.note}</p>}<div className="clinic-detail-title phone-title"><Phone size={16}/> للحجز والاستفسار</div><div className="phone-list">{clinic.phones.map(p=><a href={`tel:${p}`} key={p} dir="ltr">{p}</a>)}</div><a className="map-link" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(clinic.map)}`} target="_blank" rel="noreferrer">عرض الموقع على الخريطة <ArrowLeft size={16}/></a><div className="booking-note"><CalendarDays size={15}/> الحجز بالحضور</div></article>)}</div>
       </section>
 
       <section className="contact-band" id="contact"><div><span className="eyebrow light">نحن هنا لمساعدتك</span><h2>للاستفسار عن العيادات ومواعيدها</h2><p>يمكنك التواصل هاتفيًا مع العيادة المناسبة أو زيارة موقعها خلال مواعيد العمل المعلنة.</p></div><a href="#clinics" className="light-btn">أرقام العيادات ومواعيدها <ArrowLeft size={17}/></a></section>
