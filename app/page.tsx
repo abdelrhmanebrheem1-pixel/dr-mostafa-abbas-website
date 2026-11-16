@@ -60,7 +60,7 @@ export default function Home() {
         </div>
         <div className="hero-art" aria-label="صورة الدكتور مصطفى عباس">
           <div className="orbit orbit-one"/><div className="orbit orbit-two"/>
-          <div className="portrait-placeholder"><img className="doctor-photo" src="/images/doctor.jpg" alt="د. مصطفى عباس" /><b>د. مصطفى عباس</b><span>استشاري أول مخ وأعصاب وطب نفسي أطفال</span></div>
+          <div className="portrait-placeholder"><img className="doctor-photo" src="/images/doctor.jpeg" alt="د. مصطفى عباس" /><b>د. مصطفى عباس</b><span>استشاري أول مخ وأعصاب وطب نفسي أطفال</span></div>
           <div className="floating-note"><span className="note-icon"><Stethoscope size={20}/></span><span><b>رعاية متخصصة</b><small>مخ وأعصاب وطب نفسي أطفال</small></span></div>
           <div className="hero-stamp"><HeartHandshake size={22}/><span>اهتمام<br/>ورعاية</span></div>
         </div>
