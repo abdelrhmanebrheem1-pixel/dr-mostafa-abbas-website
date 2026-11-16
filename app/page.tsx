@@ -53,7 +53,7 @@ export default function Home() {
   const [liveClinics, setLiveClinics] = useState(clinics);
   const [liveDoctorImage, setLiveDoctorImage] = useState("/images/doctor.jpeg");
   const [liveHeroLead, setLiveHeroLead] = useState("رعاية طبية متخصصة في مخ وأعصاب الأطفال والطب النفسي للأطفال، مع اهتمام بفهم احتياجات كل طفل ومساندة أسرته.");
-  useEffect(() => { fetch("/api/site-content", {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(d => { if(d?.clinics?.length===3) setLiveClinics(d.clinics); if(d?.heroLead) setLiveHeroLead(d.heroLead); if(d?.doctorImage) setLiveDoctorImage(d.doctorImage); }).catch(()=>{}); }, []);
+  useEffect(() => { fetch("/api/site-content", {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(d => { if(Array.isArray(d?.clinics) && d.clinics.length===4) setLiveClinics(d.clinics); if(d?.heroLead) setLiveHeroLead(d.heroLead); if(d?.doctorImage) setLiveDoctorImage(d.doctorImage); }).catch(()=>{}); }, []);
   return (
     <main>
       <div className="topline"><span>مواعيد العيادات والحجز بالحضور</span><span>رعاية تبدأ بالفهم... واهتمام يمتد للمستقبل</span></div>
