@@ -7,6 +7,18 @@ import {
 
 const clinics = [
   {
+    name: "عيادة كفر الشيخ",
+    address: "كفر الشيخ - المحاربين الجديدة - برج فينيسيا - أعلى البنك القطري - بجوار مطعم ختعم",
+    phones: ["01019986068"],
+    hours: [
+      "الأحد: 9 صباحًا – 1 ظهرًا، و3 عصرًا – 6 مساءً",
+      "الثلاثاء: 9 صباحًا – 1 ظهرًا",
+      "الأربعاء: 4 عصرًا – 8 مساءً",
+      "الخميس: 9 صباحًا – 1 ظهرًا"
+    ],
+    map: "برج فينيسيا المحاربين الجديدة كفر الشيخ"
+  },
+  {
     name: "عيادة رشيد",
     address: "رشيد - شارع البحر - بجوار مسجد آل حمد - عيادات دار الطب",
     phones: ["01066293232", "01012982746", "01555194008"],
@@ -22,16 +34,12 @@ const clinics = [
     map: "مستشفى الشروق طنطا تقاطع شارع علي بيك الكبير مع شارع الحلو"
   },
   {
-    name: "عيادة كفر الشيخ",
-    address: "كفر الشيخ - المحاربين الجديدة - برج فينيسيا - أعلى البنك القطري - بجوار مطعم ختعم",
-    phones: ["01019986068"],
-    hours: [
-      "الأحد: 9 صباحًا – 1 ظهرًا، و3 عصرًا – 6 مساءً",
-      "الثلاثاء: 9 صباحًا – 1 ظهرًا",
-      "الأربعاء: 4 عصرًا – 8 مساءً",
-      "الخميس: 9 صباحًا – 1 ظهرًا"
-    ],
-    map: "برج فينيسيا المحاربين الجديدة كفر الشيخ أعلى البنك القطري"
+    name: "عيادة سيدي سالم",
+    address: "سيدى سالم - الميدان أمام برج عبد العاطى",
+    phones: [],
+    whatsapp: "01004746582",
+    hours: [],
+    map: "سيدى سالم - الميدان أمام برج عبد العاطى"
   }
 ];
 
@@ -86,7 +94,7 @@ export default function Home() {
 
       <section className="section clinics-section" id="clinics">
         <div className="section-heading"><span className="eyebrow">أماكن ومواعيد العيادات</span><h2>اختر العيادة <em>الأقرب إليك</em></h2><p>الحجز يتم بالحضور إلى العيادة. يُرجى التأكد من المواعيد قبل التوجه.</p></div>
-        <div className="clinic-grid">{liveClinics.map((clinic, index)=><article className="clinic-card" key={clinic.name}><div className="clinic-top"><span className="clinic-index">0{index+1}</span><span className="clinic-pin"><MapPin size={20}/></span></div><h3>{clinic.name}</h3><p className="clinic-address"><MapPin size={16}/>{clinic.address}</p><div className="clinic-detail-title"><Clock3 size={16}/> مواعيد العمل</div><ul className="hours">{clinic.hours.map(h=><li key={h}>{h}</li>)}</ul>{clinic.note && <p className="note">{clinic.note}</p>}<div className="clinic-detail-title phone-title"><Phone size={16}/> للحجز والاستفسار</div><div className="phone-list">{clinic.phones.map(p=><a href={`tel:${p}`} key={p} dir="ltr">{p}</a>)}</div><a className="map-link" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(clinic.map)}`} target="_blank" rel="noreferrer">عرض الموقع على الخريطة <ArrowLeft size={16}/></a><div className="booking-note"><CalendarDays size={15}/> الحجز بالحضور</div></article>)}</div>
+        <div className="clinic-grid">{liveClinics.map((clinic, index)=><article className="clinic-card" key={clinic.name}><div className="clinic-top"><span className="clinic-index">0{index+1}</span><span className="clinic-pin"><MapPin size={20}/></span></div><h3>{clinic.name}</h3><p className="clinic-address"><MapPin size={16}/>{clinic.address}</p><div className="clinic-detail-title"><Clock3 size={16}/> مواعيد العمل</div><ul className="hours">{clinic.hours.map(h=><li key={h}>{h}</li>)}</ul>{clinic.note && <p className="note">{clinic.note}</p>}<div className="clinic-detail-title phone-title"><Phone size={16}/> للحجز والاستفسار</div><div className="phone-list">{clinic.phones.map(p=><a href={`tel:${p}`} key={p} dir="ltr">{p}</a>)}</div>{clinic.whatsapp && <a className="whatsapp-link" href={`https://wa.me/2${clinic.whatsapp.slice(1)}`} target="_blank" rel="noreferrer">تواصل واتساب: {clinic.whatsapp}</a>}<a className="map-link" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(clinic.map)}`} target="_blank" rel="noreferrer">عرض الموقع على الخريطة <ArrowLeft size={16}/></a><div className="booking-note"><CalendarDays size={15}/> الحجز بالحضور</div></article>)}</div>
       </section>
 
       <section className="contact-band" id="contact"><div><span className="eyebrow light">نحن هنا لمساعدتك</span><h2>للاستفسار عن العيادات ومواعيدها</h2><p>يمكنك التواصل هاتفيًا مع العيادة المناسبة أو زيارة موقعها خلال مواعيد العمل المعلنة.</p></div><a href="#clinics" className="light-btn">أرقام العيادات ومواعيدها <ArrowLeft size={17}/></a></section>
