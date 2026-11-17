@@ -28,3 +28,5 @@
 .media-copy p{white-space:pre-wrap;color:#667282;font-size:13px;line-height:2;margin:0}
 @media(max-width:900px){.media-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.media-grid{grid-template-columns:1fr}.media-image{height:210px}}
+
+.media-empty{grid-column:1/-1;margin:0;padding:28px;border:1px dashed #cbded4;border-radius:14px;background:#fff;color:#738078;text-align:center;font-size:13px;line-height:2}
