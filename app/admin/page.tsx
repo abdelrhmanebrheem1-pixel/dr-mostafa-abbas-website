@@ -2,9 +2,9 @@
 import {useEffect,useState} from "react";
 const initial={heroLead:"رعاية طبية متخصصة في مخ وأعصاب الأطفال والطب النفسي للأطفال، مع اهتمام بفهم احتياجات كل طفل ومساندة أسرته.",clinics:[
 {name:"عيادة كفر الشيخ",address:"كفر الشيخ - المحاربين الجديدة - برج فينيسيا - أعلى البنك القطري - بجوار مطعم ختعم",phones:["01019986068"],hours:["الأحد: 9 صباحًا – 1 ظهرًا، و3 عصرًا – 6 مساءً","الثلاثاء: 9 صباحًا – 1 ظهرًا","الأربعاء: 4 عصرًا – 8 مساءً","الخميس: 9 صباحًا – 1 ظهرًا"],map:"برج فينيسيا المحاربين الجديدة كفر الشيخ"},
-{name:"عيادة رشيد",address:"رشيد - شارع البحر - بجوار مسجد آل حمد - عيادات دار الطب",phones:["01066293232","01012982746","01555194008"],hours:["السبت: 9 صباحًا – 1 ظهرًا"],map:"رشيد شارع البحر بجوار مسجد آل حمد عيادات دار الطب"},
-{name:"عيادة طنطا",address:"مدينة طنطا - مستشفى الشروق - تقاطع شارع علي بيك الكبير مع شارع الحلو",phones:["01023334719"],hours:["الأربعاء: أسبوعيًا"],note:"ساعات العمل ستُضاف لاحقًا",map:"مستشفى الشروق طنطا تقاطع شارع علي بيك الكبير مع شارع الحلو"},
-{name:"عيادة سيدي سالم",address:"سيدى سالم - الميدان أمام برج عبد العاطى",phones:[],whatsapp:"01004746582",hours:[],map:"سيدى سالم - الميدان أمام برج عبد العاطى"}]};
+{name:"عيادة رشيد",address:"رشيد - شارع البحر - بجوار مسجد آل حمد - عيادات دار الطب",phones:["01066293232","01012982746","01555194008"],hours:["السبت: 9 صباحًا – 1 ظهرًا"],map:"31.391454, 30.4226305"},
+{name:"عيادة طنطا",address:"مدينة طنطا - مستشفى الشروق - تقاطع شارع علي بيك الكبير مع شارع الحلو",phones:["01023334719"],hours:["الأربعاء: أسبوعيًا"],note:"ساعات العمل ستُضاف لاحقًا",map:"30.7963499, 31.0037908"},
+{name:"عيادة سيدي سالم",address:"31.2711364, 30.7891812",phones:[],whatsapp:"01004746582",hours:[],map:"31.2711364, 30.7891812"}]};
 export default function Admin(){const [ok,S]=useState(false),[loading,L]=useState(true),[u,U]=useState("admin"),[p,P]=useState(""),[data,D]=useState<any>(initial),[msg,M]=useState(""),[busy,B]=useState(false);
 useEffect(()=>{fetch("/api/admin/session",{cache:"no-store"}).then(r=>r.json()).then(async x=>{if(x.authenticated){S(true);const r=await fetch("/api/site-content");if(r.ok)D(await r.json())}}).catch(()=>M("تعذر الاتصال")).finally(()=>L(false))},[]);
 async function login(e:any){e.preventDefault();B(true);const r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:u,password:p})});const x=await r.json();if(r.ok){S(true);P("");const c=await fetch("/api/site-content");if(c.ok)D(await c.json())}else M(x.message||"بيانات الدخول غير صحيحة");B(false)}
