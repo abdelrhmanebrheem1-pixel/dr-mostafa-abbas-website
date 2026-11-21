@@ -33,10 +33,18 @@ function validatePosts(posts) {
     }
 
     if (post.type === "video") {
-      let host = "";
-      try { host = new URL(post.videoUrl).hostname.toLowerCase(); } catch {}
-      if (!["youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be",
-            "www.youtu.be", "vimeo.com", "www.vimeo.com", "player.vimeo.com"].includes(host)) {
+      let parsed;
+      try { parsed = new URL(post.videoUrl); } catch {}
+      const host = parsed?.hostname.toLowerCase().replace(/^www\./, "") || "";
+      const youtubeHost = ["youtube.com", "m.youtube.com", "youtu.be"].includes(host);
+      const vimeoHost = ["vimeo.com", "player.vimeo.com"].includes(host);
+      const pathParts = parsed?.pathname.split("/").filter(Boolean) || [];
+      const hasVideoId = host === "youtu.be"
+        ? Boolean(pathParts[0])
+        : youtubeHost
+          ? Boolean(parsed.searchParams.get("v") || (["shorts", "embed", "live"].includes(pathParts[0]) && pathParts[1]))
+          : vimeoHost && Boolean(pathParts[pathParts.length - 1]);
+      if (!parsed || !["https:", "http:"].includes(parsed.protocol) || (!youtubeHost && !vimeoHost) || !hasVideoId) {
         return "أضف رابط فيديو صحيح من YouTube أو Vimeo.";
       }
     }
@@ -52,6 +60,29 @@ export async function onRequestGet({ env }) {
   if (!env.SITE_CONTENT) return json({ ok: false, message: "مساحة التخزين غير متاحة." }, 503);
   const posts = await env.SITE_CONTENT.get("site-posts", { type: "json" });
   return json({ posts: Array.isArray(posts) ? posts : [] });
+}
+
+export async function onRequestDelete({ request, env }) {
+  if (!env.SITE_CONTENT) return json({ ok: false, message: "مساحة التخزين غير متاحة." }, 503);
+  if (!env.ADMIN_USERNAME || !env.SESSION_SECRET ||
+      !(await verifySession(request, env.SESSION_SECRET, env.ADMIN_USERNAME))) {
+    return json({ ok: false, message: "انتهت جلسة الدخول. سجّل الدخول مرة أخرى." }, 401);
+  }
+  const id = new URL(request.url).searchParams.get("id");
+  if (!id) return json({ ok: false, message: "معرّف المحتوى غير موجود." }, 400);
+  try {
+    const current = await env.SITE_CONTENT.get("site-posts", { type: "json" });
+    const posts = Array.isArray(current) ? current : [];
+    const nextPosts = posts.filter((post) => String(post?.id) !== id);
+    if (nextPosts.length === posts.length) {
+      return json({ ok: false, message: "المحتوى غير موجود أو تم حذفه بالفعل." }, 404);
+    }
+    await env.SITE_CONTENT.put("site-posts", JSON.stringify(nextPosts));
+    return json({ ok: true, count: nextPosts.length });
+  } catch (error) {
+    console.error("SITE_POSTS_DELETE_FAILED", error instanceof Error ? error.message : "unknown error");
+    return json({ ok: false, message: "تعذر حذف المحتوى حاليًا. حاول مرة أخرى." }, 500);
+  }
 }
 
 export async function onRequestPut({ request, env }) {
